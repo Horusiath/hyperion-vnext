@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Binary;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Hyperion.Abstractions;
@@ -36,7 +37,7 @@ namespace Hyperion
         {
             Span<byte> span = stackalloc byte[sizeof(short)];
             ReadBytes(span);
-            return span.NonPortableCast<byte, short>()[0];
+            return BinaryPrimitives.ReadInt16BigEndian(span);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -44,7 +45,7 @@ namespace Hyperion
         {
             Span<byte> span = stackalloc byte[sizeof(int)];
             ReadBytes(span);
-            return span.NonPortableCast<byte, int>()[0];
+            return BinaryPrimitives.ReadInt32BigEndian(span);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -52,7 +53,7 @@ namespace Hyperion
         {
             Span<byte> span = stackalloc byte[sizeof(long)];
             ReadBytes(span);
-            return span.NonPortableCast<byte, long>()[0];
+            return BinaryPrimitives.ReadInt64BigEndian(span);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -66,7 +67,7 @@ namespace Hyperion
         {
             Span<byte> span = stackalloc byte[sizeof(ushort)];
             ReadBytes(span);
-            return span.NonPortableCast<byte, ushort>()[0];
+            return BinaryPrimitives.ReadUInt16BigEndian(span);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -74,7 +75,7 @@ namespace Hyperion
         {
             Span<byte> span = stackalloc byte[sizeof(uint)];
             ReadBytes(span);
-            return span.NonPortableCast<byte, uint>()[0];
+            return BinaryPrimitives.ReadUInt32BigEndian(span);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -82,30 +83,37 @@ namespace Hyperion
         {
             Span<byte> span = stackalloc byte[sizeof(ulong)];
             ReadBytes(span);
-            return span.NonPortableCast<byte, ulong>()[0];
+            return BinaryPrimitives.ReadUInt64BigEndian(span);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public float ReadSingle()
+        public unsafe float ReadSingle()
         {
-            Span<byte> span = stackalloc byte[sizeof(float)];
+            Span<byte> span = stackalloc byte[sizeof(int)];
             ReadBytes(span);
-            return span.NonPortableCast<byte, float>()[0];
+            var i = BinaryPrimitives.ReadInt32BigEndian(span);
+            return BitConverter.Int32BitsToSingle(i);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double ReadDouble()
         {
-            Span<byte> span = stackalloc byte[sizeof(double)];
+            Span<byte> span = stackalloc byte[sizeof(long)];
             ReadBytes(span);
-            return span.NonPortableCast<byte, double>()[0];
+            var i = BinaryPrimitives.ReadInt64BigEndian(span);
+            return BitConverter.Int64BitsToDouble(i);
         }
 
         public decimal ReadDecimal()
         {
-            Span<byte> span = stackalloc byte[sizeof(decimal)];
-            ReadBytes(span);
-            return span.NonPortableCast<byte, decimal>()[0];
+            Span<int> parts = stackalloc int[4];
+            ReadBytes(parts.AsBytes());
+            
+            var sign = (parts[3] & 0x80000000) != 0;
+
+            var scale = (byte)((parts[3] >> 16) & 0x7F);
+            var newValue = new decimal(parts[0], parts[1], parts[2], sign, scale);
+            return newValue;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

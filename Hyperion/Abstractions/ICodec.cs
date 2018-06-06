@@ -1,16 +1,18 @@
-﻿using Hyperion.Sessions;
+﻿using System;
+using Hyperion.Sessions;
 
 namespace Hyperion.Abstractions
 {
-    internal interface ICodec
+    public interface ICodec
     {
+        Type TargetType { get; }
         ushort Identifier { get; }
     }
 
     /// <summary>
     /// Codecs are responsible for serializing/deserializing objects of specific type.
     /// </summary>
-    public interface ICodec<T>
+    public interface ICodec<T> : ICodec
     {
         void Write<TWriter, TSession>(TWriter output, in T value, TSession session) 
             where TWriter : struct, IWriter

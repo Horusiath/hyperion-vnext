@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Hyperion\Hyperion.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Codecs\" />
-  </ItemGroup>
-
 </Project>

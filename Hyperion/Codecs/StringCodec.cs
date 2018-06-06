@@ -7,6 +7,7 @@ namespace Hyperion.Codecs
 {
     public struct StringCodec : ICodec<string>
     {
+        public Type TargetType => typeof(string);
         public ushort Identifier => TypeIdentifiers.STRING_ID;
         
         public void Write<TWriter, TSession>(TWriter output, in string value, TSession session) 

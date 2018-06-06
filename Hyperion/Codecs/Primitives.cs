@@ -10,6 +10,7 @@ namespace Hyperion.Codecs
         private const byte TRUE = 1;
         private const byte FALSE = 0;
 
+        public Type TargetType => typeof(bool);
         public ushort Identifier => TypeIdentifiers.BOOL_ID;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -26,6 +27,7 @@ namespace Hyperion.Codecs
     
     public struct CharCodec : ICodec<char>
     {
+        public Type TargetType => typeof(char);
         public ushort Identifier => TypeIdentifiers.CHAR_ID;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -41,6 +43,7 @@ namespace Hyperion.Codecs
     
     public struct SByteCodec : ICodec<sbyte>
     {
+        public Type TargetType => typeof(sbyte);
         public ushort Identifier => TypeIdentifiers.SBYTE_ID;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -56,6 +59,7 @@ namespace Hyperion.Codecs
     
     public struct ByteCodec : ICodec<byte>
     {
+        public Type TargetType => typeof(byte);
         public ushort Identifier => TypeIdentifiers.BYTE_ID;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -71,6 +75,7 @@ namespace Hyperion.Codecs
     
     public struct ShortCodec : ICodec<short>
     {
+        public Type TargetType => typeof(short);
         public ushort Identifier => TypeIdentifiers.INT16_ID;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -86,6 +91,7 @@ namespace Hyperion.Codecs
     
     public struct UShortCodec : ICodec<ushort>
     {
+        public Type TargetType => typeof(ushort);
         public ushort Identifier => TypeIdentifiers.UINT16_ID;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -101,6 +107,7 @@ namespace Hyperion.Codecs
     
     public struct IntCodec : ICodec<int>
     {
+        public Type TargetType => typeof(int);
         public ushort Identifier => TypeIdentifiers.INT32_ID;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -116,6 +123,7 @@ namespace Hyperion.Codecs
     
     public struct UIntCodec : ICodec<uint>
     {
+        public Type TargetType => typeof(uint);
         public ushort Identifier => TypeIdentifiers.UINT32_ID;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -131,6 +139,7 @@ namespace Hyperion.Codecs
 
     public struct LongCodec : ICodec<long>
     {
+        public Type TargetType => typeof(long);
         public ushort Identifier => TypeIdentifiers.INT64_ID;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -146,6 +155,7 @@ namespace Hyperion.Codecs
     
     public struct ULongCodec : ICodec<ulong>
     {
+        public Type TargetType => typeof(ulong);
         public ushort Identifier => TypeIdentifiers.UINT64_ID;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -161,6 +171,7 @@ namespace Hyperion.Codecs
     
     public struct FloatCodec : ICodec<float>
     {
+        public Type TargetType => typeof(float);
         public ushort Identifier => TypeIdentifiers.SINGLE_ID;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -176,6 +187,7 @@ namespace Hyperion.Codecs
     
     public struct DoubleCodec : ICodec<double>
     {
+        public Type TargetType => typeof(double);
         public ushort Identifier => TypeIdentifiers.DOUBLE_ID;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -191,6 +203,7 @@ namespace Hyperion.Codecs
     
     public struct DecimalCodec : ICodec<decimal>
     {
+        public Type TargetType => typeof(decimal);
         public ushort Identifier => TypeIdentifiers.DECIMAL_ID;
 
         public void Write<TWriter, TSession>(TWriter output, in decimal value, TSession session) 
@@ -224,6 +237,7 @@ namespace Hyperion.Codecs
     
     public struct TimeSpanCodec : ICodec<TimeSpan>
     {
+        public Type TargetType => typeof(TimeSpan);
         public ushort Identifier => TypeIdentifiers.TIMESPAN_ID;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -239,6 +253,7 @@ namespace Hyperion.Codecs
     
     public struct DateTimeCodec : ICodec<DateTime>
     {
+        public Type TargetType => typeof(DateTime);
         public ushort Identifier => TypeIdentifiers.DATETIME_ID;
 
         public void Write<TWriter, TSession>(TWriter output, in DateTime value, TSession session) 
@@ -259,6 +274,7 @@ namespace Hyperion.Codecs
     
     public struct DateTimeOffsetCodec : ICodec<DateTimeOffset>
     {
+        public Type TargetType => typeof(DateTimeOffset);
         public ushort Identifier => TypeIdentifiers.DATETIME_OFFSET_ID;
 
         public void Write<TWriter, TSession>(TWriter output, in DateTimeOffset value, TSession session) 
@@ -281,6 +297,7 @@ namespace Hyperion.Codecs
     
     public struct GuidCodec : ICodec<Guid>
     {
+        public Type TargetType => typeof(Guid);
         public ushort Identifier => TypeIdentifiers.GUID_ID;
 
         public void Write<TWriter, TSession>(TWriter output, in Guid value, TSession session) 
@@ -304,6 +321,7 @@ namespace Hyperion.Codecs
     
     public struct BinaryCodec : ICodec<byte[]>
     {
+        public Type TargetType => typeof(byte[]);
         public ushort Identifier => TypeIdentifiers.BYTE_ARRAY_ID;
 
         public void Write<TWriter, TSession>(TWriter output, in byte[] value, TSession session) 
