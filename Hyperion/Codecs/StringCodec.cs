@@ -19,6 +19,10 @@ namespace Hyperion.Codecs
                 // if value was used previously in this session, its ID will be reused
                 output.WriteInt32(referenceId);
             }
+            else if (ReferenceEquals(value, null))
+            {
+                output.WriteInt32(Constants.NULL_REFERENCE_ID);
+            }
             else
             {
                 output.WriteInt32(referenceId);
@@ -33,14 +37,26 @@ namespace Hyperion.Codecs
             where TSession : IDeserializerSession
         {
             var referenceId = input.ReadInt32();
-            if (!session.TryRecall(referenceId, out value))
+            if (referenceId == Constants.NULL_REFERENCE_ID)
+            {
+                value = null;
+            }
+            else if (!session.TryRecall(referenceId, out value))
             {
                 var length = input.ReadInt32();
-                using (var memory = session.Borrow(length))
+                var memory = session.Borrow(length);
+                try
                 {
-                    input.ReadBytes(memory.Span);
-                    value = new string(memory.Span.NonPortableCast<byte, char>());
+                    var span = new Span<byte>(memory, 0, length);
+                    input.ReadBytes(span);
+                    value = new string(span.NonPortableCast<byte, char>());
+
                 }
+                finally
+                {
+                    session.Return(memory);
+                }
+                
                 
                 if (referenceId > 0)
                 {

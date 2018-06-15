@@ -281,7 +281,7 @@ namespace Hyperion.Codecs
             where TWriter : struct, IWriter 
             where TSession : ISerializerSession
         {
-            output.WriteInt64(value.Date.Ticks);
+            output.WriteInt64(value.UtcDateTime.Ticks);
             output.WriteInt64(value.Offset.Ticks);
         }
 
@@ -289,7 +289,7 @@ namespace Hyperion.Codecs
             where TReader : struct, IReader 
             where TSession : IDeserializerSession
         {
-            var date = new DateTime(input.ReadInt64());
+            var date = new DateTime(input.ReadInt64(), DateTimeKind.Unspecified);
             var offset = new TimeSpan(input.ReadInt64());
             value = new DateTimeOffset(date, offset);
         }
@@ -340,6 +340,23 @@ namespace Hyperion.Codecs
             var bytes = new byte[length];
             input.ReadBytes(bytes);
             value = bytes;
+        }
+    }
+
+    public struct UriCodec : ICodec<Uri>
+    {
+        public Type TargetType => typeof(Uri);
+        public ushort Identifier => TypeIdentifiers.URI;
+        public void Write<TWriter, TSession>(TWriter output, in Uri value, TSession session) where TWriter : struct, IWriter where TSession : ISerializerSession
+        {
+            var stringified = value.ToString();
+            default(StringCodec).Write(output, stringified, session);
+        }
+
+        public void Read<TReader, TSession>(TReader input, out Uri value, TSession session) where TReader : struct, IReader where TSession : IDeserializerSession
+        {
+            default(StringCodec).Read(input, out var str, session);
+            value = new Uri(str);
         }
     }
 }

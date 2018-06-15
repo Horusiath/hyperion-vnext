@@ -37,4 +37,6 @@ namespace Hyperion.Tests.Codecs
     public class GuidSerializerSpecs : BaseSerializerSpecs<Guid> { }
 
     public class StringSerializerSpecs : BaseSerializerSpecs<string> { }
+
+    //public class UriSerializerSpecs : BaseSerializerSpecs<Uri> { }
 }

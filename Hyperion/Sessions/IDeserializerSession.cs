@@ -28,6 +28,12 @@ namespace Hyperion.Sessions
         /// </summary>
         /// <param name="length"></param>
         /// <returns></returns>
-        OwnedMemory<byte> Borrow(int length);
+        byte[] Borrow(int length);
+
+        /// <summary>
+        /// Returns a memory fragment that was borrowed previously using
+        /// <see cref="Borrow"/> method.
+        /// </summary>
+        void Return(byte[] borrowed);
     }
 }

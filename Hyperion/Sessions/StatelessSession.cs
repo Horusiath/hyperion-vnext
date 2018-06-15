@@ -5,6 +5,8 @@ namespace Hyperion.Sessions
 {
     public struct StatelessSession : ISerializerSession, IDeserializerSession
     {
+        private static readonly ArrayPool<byte> BufferPool = ArrayPool<byte>.Shared;
+
         /// <inheritdoc cref="ISerializerSession"/>
         public bool Remember<T>(T value, out int referenceId) where T : class
         {
@@ -20,10 +22,7 @@ namespace Hyperion.Sessions
         }
 
         public void Store<T>(int referenceId, T value) where T : class { }
-        public OwnedMemory<byte> Borrow(int length)
-        {
-            var bytes = ArrayPool<byte>.Shared.Rent(length);
-            throw new NotImplementedException();
-        }
+        public byte[] Borrow(int minLength) => BufferPool.Rent(minLength);
+        public void Return(byte[] borrowed) => BufferPool.Return(borrowed);
     }
 }

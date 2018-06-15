@@ -22,5 +22,6 @@
         public const ushort DECIMAL_ID = 17;
         public const ushort CHAR_ID = 18;
         public const ushort DATETIME_OFFSET_ID = 19;
+        public static ushort URI = 20;
     }
 }

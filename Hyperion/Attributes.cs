@@ -17,13 +17,20 @@ namespace Hyperion
         /// A unique identifier of given type. Attached as part of payload manifest.
         /// If it's not provided, it will be generated as a hash of a given fully qualified type name with assembly.
         /// </summary>
-        public ushort? Identifier { get; set; }
+        public ushort? Id { get; }
+
+        public SchemaAttribute() { }
+
+        public SchemaAttribute(ushort id)
+        {
+            Id = id;
+        }
     }
 
     /// <summary>
     /// Tells hyperion to ignore a given field or property during serialization/deserialization.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field|AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class IgnoreAttribute : HyperionAttribute
     {
     }
